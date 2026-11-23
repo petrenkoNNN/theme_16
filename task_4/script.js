@@ -4,7 +4,7 @@ function sanitize(html) {
   return el.textContent;
 }
 
-let user;
+let user = null;
 
 function setUser(userData) {
   user = userData;
@@ -19,7 +19,7 @@ async function getFilms() {
     const user = getUser();
     const response = await fetch("https://sb-film.skillbox.cc/films", {
       headers: {
-        email: user?.email
+        email: user.email
       }
     });
 
@@ -73,16 +73,16 @@ function renderFilms(films) {
   el.classList.add('films');
 
   if (films.length === 0) {
-    el.innerText = 'Cписок фильмов пока пуст';
+    el.textContent = 'Список фильмов пока пуст';
     return el;
   }
 
-  films.forEach((film) => {
+  films.forEach(({ title, releaseYear, isWatched }) => {
     const filmEl = document.createElement('div');
     filmEl.classList.add('films-card');
-    filmEl.dataset.watched = film.isWatched;
+    filmEl.dataset.watched = isWatched;
 
-    filmEl.textContent = `${film.title} (${film.releaseYear})`;
+    filmEl.textContent = `${title} (${releaseYear})`;
 
     el.append(filmEl);
   });
@@ -97,7 +97,7 @@ function renderGlobalError(message) {
     <div class="error">
       <div class="error-title">Упс... Возникла ошибка</div>
       <div class="error-message">${sanitize(message)}</div>
-    </error>
+    </div>
   `;
 
   return el;
@@ -105,14 +105,14 @@ function renderGlobalError(message) {
 
 function renderAuthForm(props) {
   const form = document.createElement('form');
-  form.classList.add('authForm')
+  form.classList.add('auth-form');
 
   form.innerHTML = `
     <label for="name">Ваше имя</label>
-    <input id="name" type="text" name="name" required="true" placeholder="Василий" />
+    <input id="name" type="text" name="name" required placeholder="Василий" />
     <label for="email">Эл. почта</label>
-    <input id="email" type="text" name="email" required="true" placeholder="example@mail.com" />
-    <button class="authForm-submit"type="submit">Войти</button>
+    <input id="email" type="text" name="email" required placeholder="example@mail.com" />
+    <button class="auth-form-submit" type="submit">Войти</button>
   `;
 
   form.addEventListener('submit', (event) => {
@@ -128,23 +128,22 @@ function renderAuthForm(props) {
 }
 
 function initAuth() {
-  const app = document.getElementById("app");
+  const app = document.querySelector('.app');
   app.innerHTML = '';
 
   app.append(renderAuthForm({
     onSubmit: (user) => {
-      setUser(user);
+      user = userData;
       initApp();
     }
   }));
 }
 
 async function initApp() {
-  const app = document.getElementById("app");
+  const app = document.querySelector('.app');
   app.innerHTML = '';
 
   try {
-    const user = getUser();
     if (!user) {
       initAuth();
       return;
