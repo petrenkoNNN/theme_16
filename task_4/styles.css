@@ -4,7 +4,7 @@ body {
   color: #333;
 }
 
-#app {
+.app {
   max-width: 800px;
   margin: 0 auto;
 }
@@ -74,7 +74,7 @@ body {
   font-size: 12px;
 }
 
-.authForm {
+.auth-form {
   display: flex;
   flex-direction: column;
   gap: 16px;
@@ -84,14 +84,14 @@ body {
   border-radius: 12px;
 }
 
-.authForm input {
+.auth-form input {
   padding: 10px 8px;
   border-radius: 8px;
   border: none;
   border: 1px solid #ccc;
 }
 
-.authForm-submit {
+.auth-form-submit {
   padding: 10px 8px;
   background: #52a252;
   border: none;
@@ -118,4 +118,10 @@ body {
 
 .notification--slow {
   background: #d2691e;
+}
+
+.auth-form label { 
+  display: flex; 
+  flex-direction: 
+  column; gap: 4px; 
 }
